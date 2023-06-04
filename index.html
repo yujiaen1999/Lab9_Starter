@@ -7,6 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lab 9</title>
 
+  <!-- Step 5 - The Global Error handler and 3rd Party Tracking -->
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "ce1f85726cb84a08b1836707b3f8b59d"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>                       
+
   <style>
     button {
       margin: 3px;
@@ -90,18 +99,125 @@
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
-      e.preventDefault();
-      let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      // Step 3 - Trying Try/Catch
+      try {
+        e.preventDefault();
+        let output = document.querySelector('output');
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        let operator = document.querySelector('#operator').value;
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+
+        test();
+      } catch (err){
+        console.error("Catched a error: " + err);
+      }
     });
+
+    // Step 4 - Throw and Custom Errors
+    class CustomnError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "CustomnError";
+      }
+    }
+
+    function test() {
+      throw new CustomnError("ERROR!");
+    }
+
+    // try {
+    //   test();
+    // } catch(err) {
+    //   alert(err.message); 
+    //   alert(err.name); // ValidationError
+    // }
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+
+    // Step 2 - Adding Buttons for Console Testing
+    errorBtns[0].addEventListener("click", () => {
+      console.log("Console Log")
+    })
+
+    errorBtns[1].addEventListener("click", () => {
+      console.error("Console Error")
+    })
+
+    errorBtns[2].addEventListener("click", () => {
+      console.count("Console Count")
+    })
+
+    errorBtns[3].addEventListener("click", () => {
+      console.warn("Console Warn")
+    })
+
+    errorBtns[4].addEventListener("click", () => {
+      let x = 1;
+      let y = 3;
+      let reason = 'x is expected to be larger than y';
+      console.assert(x > y, {x, y, reason});
+    })
+
+    errorBtns[5].addEventListener("click", () => {
+      console.clear();
+    })
+
+    errorBtns[6].addEventListener("click", () => {
+      console.dir(document.head);
+    })
+
+    errorBtns[7].addEventListener("click", () => {
+      console.dirxml(document);
+    })
+
+    errorBtns[8].addEventListener("click", () => {
+      console.group("Console Group Start");
+    })
+
+    errorBtns[9].addEventListener("click", () => {
+      console.groupEnd();
+    })
+
+    errorBtns[10].addEventListener("click", () => {
+      var tableSample = [
+        {
+          first: 'Jiaen',
+          last: 'Yu',
+        },
+        {
+          first: 'Jacky',
+          last: 'Chen',
+        },
+        {
+          first: 'Taylor',
+          last: 'Swift',
+        }
+      ];
+      console.table(tableSample);
+    })
+
+    errorBtns[11].addEventListener("click", () => {
+      console.time("Timer");
+    })
+
+    errorBtns[12].addEventListener("click", () => {
+      console.timeEnd("Timer");
+    })
+
+    errorBtns[13].addEventListener("click", () => {
+      console.trace();
+    })
+
+    errorBtns[14].addEventListener("click", () => {
+      throw new Error("Trigger a Global Error");
+    })
+
+    TrackJS.track('Testing TrackJS!');
+
   </script>
 </body>
 
